@@ -24,6 +24,44 @@ mount-mig my-image.img mnt -p 5
 
 Per default it just mounts the first one.
 
+## Creating image files
+
+To create raw image files you can use fallocate
+
+``` sh
+# make a ~1gb image
+fallocate my-image.img -l 1000000000
+```
+
+Then using `fdisk` you can make a partition table
+
+``` sh
+# to simply make a single partition, follow this
+fdisk my-image.img
+n<enter>
+<enter>
+<enter>
+<enter>
+w<enter>
+```
+
+You can also make more than one partition or make one bootable etc.
+
+Then format the partition using ext4
+
+``` sh
+# note the Start sector
+fdisk -l my-image.img
+# change 2048 to the Start sector (usually 2048)
+mkfs.ext4 -F -E offset=$((2048 * 512)) my-image.img
+```
+
+You can now mount this image using mount-img
+
+``` sh
+mount-img my-image.img mnt
+```
+
 Happy mounting!
 
 ## License

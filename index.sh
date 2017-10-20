@@ -45,8 +45,13 @@ for line in $(fdisk -l "$IMAGE" | grep "$IMAGE$PARTITION" | grep -v "Disk $IMAGE
   break
 done
 
-if [ "$OFFSET" == "" ] && [ "$SECTORS" == "" ]; then
+if [ "$OFFSET" == "" ] && [ "$SECTORS" == "" ] && [ "$PARTITION" != "" ]; then
   echo Could not find partition
+  exit 3
 fi
 
-$DRY_RUN sudo mount -o loop,offset=$(($OFFSET * 512)),sizelimit=$(($SECTORS * 512)) "$IMAGE" "$MNT"
+if [ "$OFFSET" == "" ]; then
+  $DRY_RUN sudo mount -o loop "$IMAGE" "$MNT"
+else
+  $DRY_RUN sudo mount -o loop,offset=$(($OFFSET * 512)),sizelimit=$(($SECTORS * 512)) "$IMAGE" "$MNT"
+fi
