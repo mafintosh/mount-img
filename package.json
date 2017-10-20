@@ -1,0 +1,21 @@
+{
+  "name": "mount-img",
+  "version": "0.0.0",
+  "description": "Easily mount a .img file on Linux",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "bin": {
+    "mount-img": "./index.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/mount-img.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/mount-img/issues"
+  },
+  "homepage": "https://github.com/mafintosh/mount-img"
+}
