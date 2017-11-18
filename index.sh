@@ -40,8 +40,8 @@ fi
 IFS=$'\n'
 
 for line in $(fdisk -l "$IMAGE" | grep "$IMAGE$PARTITION" | grep -v "Disk $IMAGE"); do
-  OFFSET=$(echo $line | awk '{print $2}')
-  SECTORS=$(echo $line | awk '{print $4}')
+  OFFSET=$(echo $line | sed 's|\*||' | awk '{print $2}')
+  SECTORS=$(echo $line | sed 's|\*||' | awk '{print $4}')
   break
 done
 
