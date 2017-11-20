@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 PARTITION=""
+FORCE=false
 
 set_image_or_mnt () {
   if [ "$IMAGE" == "" ]; then
@@ -10,11 +11,17 @@ set_image_or_mnt () {
   fi
 }
 
+silent () {
+  "$@" 2>/dev/null >/dev/null
+}
+
 while [ "$1" != "" ]; do
   case "$1" in
     --dry-run)   DRY_RUN=echo; shift ;;
     --partition) PARTITION="$2"; shift; shift ;;
     -p)          PARTITION="$2"; shift; shift ;;
+    --force)     FORCE=true; shift;;
+    -f)          FORCE=true; shift;;
     *)           set_image_or_mnt "$1"; shift ;;
   esac
 done
@@ -23,6 +30,7 @@ if [ "$IMAGE" == "" ] || [ "$MNT" == "" ]; then
   echo "Usage: mount-img <image> <mnt> [options]"
   echo
   echo " --partition, -p [partition-number]"
+  echo " --force, -f     (force mount)"
   echo
   exit 1
 fi
@@ -35,6 +43,10 @@ fi
 if ! [ -d "$MNT" ]; then
   echo "$MNT" is not a directory
   exit 2
+fi
+
+if $FORCE; then
+  $DRY_RUN silent sudo umount "$MNT"
 fi
 
 IFS=$'\n'
