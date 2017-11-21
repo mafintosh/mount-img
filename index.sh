@@ -2,6 +2,7 @@
 
 PARTITION=""
 FORCE=false
+READ_ONLY=""
 
 set_image_or_mnt () {
   if [ "$IMAGE" == "" ]; then
@@ -22,6 +23,8 @@ while [ "$1" != "" ]; do
     -p)          PARTITION="$2"; shift; shift ;;
     --force)     FORCE=true; shift;;
     -f)          FORCE=true; shift;;
+    --read-only) READ_ONLY="--read-only"; shift;;
+    -r)          READ_ONLY="--read-only"; shift;;
     *)           set_image_or_mnt "$1"; shift ;;
   esac
 done
@@ -31,6 +34,7 @@ if [ "$IMAGE" == "" ] || [ "$MNT" == "" ]; then
   echo
   echo " --partition, -p [partition-number]"
   echo " --force, -f     (force mount)"
+  echo " --read-only, -r (read-only mount)"
   echo
   exit 1
 fi
@@ -63,7 +67,7 @@ if [ "$OFFSET" == "" ] && [ "$SECTORS" == "" ] && [ "$PARTITION" != "" ]; then
 fi
 
 if [ "$OFFSET" == "" ]; then
-  $DRY_RUN sudo mount -o loop "$IMAGE" "$MNT"
+  $DRY_RUN sudo mount $READ_ONLY -o loop "$IMAGE" "$MNT"
 else
-  $DRY_RUN sudo mount -o loop,offset=$(($OFFSET * 512)),sizelimit=$(($SECTORS * 512)) "$IMAGE" "$MNT"
+  $DRY_RUN sudo mount $READ_ONLY -o loop,offset=$(($OFFSET * 512)),sizelimit=$(($SECTORS * 512)) "$IMAGE" "$MNT"
 fi
