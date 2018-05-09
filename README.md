@@ -2,8 +2,16 @@
 
 Easily mount a .img file on Linux
 
+## Installation
+
 ```
 npm install -g mount-img
+```
+
+or without npm
+
+```
+curl -fs https://raw.githubusercontent.com/mafintosh/mount-img/master/install | sh
 ```
 
 ## Usage

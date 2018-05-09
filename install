@@ -1,0 +1,4 @@
+[ ! -d /usr/local/bin ] && echo "/usr/local/bin does not exist" && exit 1                                                 
+[ ! -O /usr/local/bin ] && SUDO_MAYBE=sudo
+$SUDO_MAYBE curl -fso /usr/local/bin/mount-img https://raw.githubusercontent.com/mafintosh/mount-img/master/index.sh      
+$SUDO_MAYBE chmod +x /usr/local/bin/mount-img
